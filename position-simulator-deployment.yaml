@@ -15,6 +15,14 @@ spec:
       containers:
         - name: position-simulator
           image: richardchesterwood/k8s-fleetman-position-simulator:release2
+          ports:
+            - containerPort: 8080
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: production-microservice
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 10
