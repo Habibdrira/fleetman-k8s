@@ -1,16 +1,19 @@
 pipeline {
     agent any
-
     stages {
-        stage('Cloner le repo') {
+        stage('Build') {
             steps {
-                git 'https://github.com/Habibdrira/fleetman-k8s.git'
+                echo 'Building...'
             }
         }
-
-        stage('Appliquer les fichiers Kubernetes') {
+        stage('Test') {
             steps {
-                sh 'kubectl apply -f .'
+                echo 'Testing...'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
             }
         }
     }
