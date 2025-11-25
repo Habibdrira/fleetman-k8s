@@ -1,0 +1,71 @@
+pipeline {
+    agent any
+    
+    environment {
+        DOCKER_REGISTRY = 'docker.io'
+        APP_NAME = 'fleetman'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Cloning repository...'
+                git branch: 'main', url: 'https://github.com/Habibdrira/fleetman-k8s.git'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                echo 'Building application...'
+                sh 'echo "Build step - would compile code here"'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                sh 'echo "Test step - would run unit tests here"'
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+            steps {
+                echo 'Running SonarQube analysis...'
+                sh 'echo "SonarQube step - would analyze code quality here"'
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                sh 'echo "Docker build step"'
+            }
+        }
+        
+        stage('Push to Registry') {
+            steps {
+                echo 'Pushing to Docker registry...'
+                sh 'echo "Docker push step"'
+            }
+        }
+        
+        stage('Deploy to Kubernetes') {
+            steps {
+                echo 'Deploying to Kubernetes...'
+                sh '''
+                    kubectl get pods
+                    kubectl get svc
+                '''
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
